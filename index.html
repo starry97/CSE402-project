@@ -1,0 +1,46 @@
+<html>
+   <head>
+      <script type = "text/javascript" src = "https://d3js.org/d3.v4.min.js"></script>    
+   </head>
+
+   <body>
+      <script>
+         let data = ['Dense', 'Dense'];
+         
+         let width = 300 
+            scaleFactor = 20, 
+            barHeight = 30;
+         
+         let graph = d3.select("body")
+            .append("svg")
+            .attr("width", 500)
+            .attr("height", 500);
+
+        for (let i = 0; i < data.length; i++) {
+            graph.append("rect").attr("x", 0).attr("y", i * 100).attr("width", 150).attr("height", 50).style("fill", "purple");
+        }
+
+        //arrow
+        graph.append("svg:defs").append("svg:marker")
+            .attr("id", "triangle")
+            .attr("refX", 6)
+            .attr("refY", 6)
+            .attr("markerWidth", 30)
+            .attr("markerHeight", 30)
+            .attr("orient", "auto")
+            .append("path")
+            .attr("d", "M 0 0 12 6 0 12 3 6")
+            .style("fill", "black");
+
+        //line              
+        graph.append("line")
+            .attr("x1", 100)
+            .attr("y1", 100)
+            .attr("x2", 200)
+            .attr("y2", 100)          
+            .attr("stroke-width", 1)
+            .attr("stroke", "black")
+            .attr("marker-end", "url(#triangle)");
+      </script>
+   </body>
+</html>
