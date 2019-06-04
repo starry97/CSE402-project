@@ -1,0 +1,41 @@
+{
+  "layers": [
+    {
+      "type": "Conv2D",
+      "name": "block1_conv1"
+    },
+    {
+      "type": "Conv2D",
+      "name": "block1_conv2"
+    },
+    {
+      "type": "MaxPooling2D",
+      "name": "block1_pool"
+    },
+    {
+      "type": "Conv2D",
+      "name": "block2_conv1"
+    },
+    {
+      "type": "Conv2D",
+      "name": "block2_conv2"
+    }
+  ],
+  "attributes": [{
+    "Conv2D": {
+      "shape": "rect",
+      "color": "white",
+      "width": "150px",
+      "height": "50px",
+      "text": ["name", "size"]
+    }, 
+    "MaxPooling2D": {
+      "shape": "line",
+      "color": "white",
+      "width": "150px",
+      "height": "50px",
+      "text": ["name"]
+    }
+  }
+]
+}
