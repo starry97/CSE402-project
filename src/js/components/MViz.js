@@ -1,14 +1,41 @@
 import { DEFAULT_ARROW_ATTRIBUTES, DEFAULT_TEXT_ATTRIBUTES, DEFAULT_RECT_ATTRIBUTES } from "../utils/constants";
 
 export default class MViz {
-  constructor(json = "{}") {
+  constructor(json = "{}", divName) {
     this.parsedJSON = JSON.parse(json);
     this.svg = d3.select(document.createElementNS(d3.namespaces.svg, 'svg'))
-    .attr("width", 500)
-    .attr("height", 500);
+                .attr("width", 500)
+                .attr("height", 500);
+    this.divName = divName;
   }
 
-  arrow(attr = {}) {
+  draw() {
+    const {layers, attributes} = this.parsedJSON;
+    let currHeight = 0;
+    layers.forEach(layer => {
+      const {name, type} = layer;
+      const attr = {
+        ...attributes[name],
+        ...attributes[type]
+      }
+      const {text, shape, ...styleAttr} = attr;
+      currHeight += (styleAttr.height || DEFAULT_RECT_ATTRIBUTES.height);
+      styleAttr.height = currHeight;
+      let label = "";
+      if (text) {
+        for (let i = 0; i < text.length; i++) {
+          label += layer[text[i]];
+        }
+      }
+      
+      this._appendShape(shape, styleAttr)
+          ._appendShape("text", {label})
+          ._insertTo("body");
+    });
+  }
+
+
+  _arrow(attr = {}) {
     attr = {
       ...DEFAULT_ARROW_ATTRIBUTES,
       ...attr
@@ -39,7 +66,7 @@ export default class MViz {
     return this;
   }
 
-  rect(attr = {}) {
+  _rect(attr = {}) {
     attr = {
       ...DEFAULT_RECT_ATTRIBUTES,
       ...attr
@@ -55,12 +82,15 @@ export default class MViz {
     return this;
   }
 
-  text(attr = {}) {
+  _text(attr = {}) {
     attr = {
       ...DEFAULT_TEXT_ATTRIBUTES,
       ...attr
     };
     const {label, dx, dy, fill, textAnchor} = attr;
+    if (!label) {
+      return this;
+    }
     this.svg.append("text")
             .attr("dx", dx)
             .attr("dy", dy)
@@ -70,9 +100,23 @@ export default class MViz {
     return this;
   }
 
-  draw(divName = "body") {
+  _insertTo(divName = "body") {
     d3.select(divName).append(() => {
       return this.svg.node();
     });
+  }
+
+  _appendShape(shape, attr = {}) {
+    if (!shape) {
+      return this;
+    }
+    switch (shape) {
+      case "rect":
+        return this._rect(attr);
+      case "text":
+        return this._text(attr);
+      default:
+        console.error("unrecognized shape " + shape);
+    }
   }
 }

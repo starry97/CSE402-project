@@ -29,7 +29,6 @@ export const DEFAULT_ARROW_ATTRIBUTES = {
 }
 
 export const DEFAULT_TEXT_ATTRIBUTES = {
-  label: "text",
   dx: width / 2,
   dy: height / 2,
   fill: "black",
