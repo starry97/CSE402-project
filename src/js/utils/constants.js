@@ -9,8 +9,8 @@ export const RECT_ATTR = '{"shape": "rect", \
                             "text": ["name"]}'
 
 // default attributes 
-const width = 200;
-const height = 100;
+const width = 150;
+const height = 50;
 
 export const DEFAULT_RECT_ATTRIBUTES = {
   x: 0,
@@ -21,16 +21,17 @@ export const DEFAULT_RECT_ATTRIBUTES = {
   fill: "white"
 }
 
+export const ARROW_LENGTH = 100;
 export const DEFAULT_ARROW_ATTRIBUTES = {
   x1: width / 2,
   x2: width / 2,
   y1: height,
-  y2: height + 100,
+  y2: height + ARROW_LENGTH,
 }
 
 export const DEFAULT_TEXT_ATTRIBUTES = {
-  dx: width / 2,
-  dy: height / 2,
+  x: width / 2,
+  y: height / 2,
   fill: "black",
   textAnchor: "middle"
 }

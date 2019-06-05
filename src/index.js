@@ -5,6 +5,6 @@ document.getElementById('upload_file').addEventListener('change', handleFileSele
 
 
 
-const testJson = '{"layers":[{"type":"Dense","name":"dense_1"},{"type":"Dense","name":"dense_2"}],"attributes":{"Dense":{"shape":"rect","color":"white","width":"150px","height":"50px","text":["name"]}}}';
+const testJson = '{"layers":[{"type":"Dense","name":"dense_1"},{"type":"Dense","name":"dense_2"}],"attributes":{"Dense":{"shape":"rect","color":"white","width":"150","height":"50","text":["name"]}}}';
 
 new MViz(testJson).draw();

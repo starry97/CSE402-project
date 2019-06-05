@@ -1,4 +1,4 @@
-import { DEFAULT_ARROW_ATTRIBUTES, DEFAULT_TEXT_ATTRIBUTES, DEFAULT_RECT_ATTRIBUTES } from "../utils/constants";
+import { DEFAULT_ARROW_ATTRIBUTES, DEFAULT_TEXT_ATTRIBUTES, DEFAULT_RECT_ATTRIBUTES, ARROW_LENGTH } from "../utils/constants";
 
 export default class MViz {
   constructor(json = "{}", divName) {
@@ -11,27 +11,45 @@ export default class MViz {
 
   draw() {
     const {layers, attributes} = this.parsedJSON;
-    let currHeight = 0;
-    layers.forEach(layer => {
+    let y = 0;
+    for (let i = 0; i < layers.length; i++) {
+      const layer = layers[i];
       const {name, type} = layer;
       const attr = {
         ...attributes[name],
         ...attributes[type]
       }
       const {text, shape, ...styleAttr} = attr;
-      currHeight += (styleAttr.height || DEFAULT_RECT_ATTRIBUTES.height);
-      styleAttr.height = currHeight;
+      const rectAttribute = {
+        ...DEFAULT_RECT_ATTRIBUTES,
+        y,
+        ...styleAttr
+      }
+
       let label = "";
       if (text) {
         for (let i = 0; i < text.length; i++) {
           label += layer[text[i]];
         }
       }
-      
-      this._appendShape(shape, styleAttr)
-          ._appendShape("text", {label})
-          ._insertTo("body");
-    });
+
+      this._appendShape(shape, rectAttribute);
+      y += parseInt(rectAttribute.height);
+      this._appendShape("text", {
+            label,
+            y: y - parseInt(rectAttribute.height) / 2 
+      });
+      if (i != layers.length - 1) {
+        const arrowAttribute = {
+          y1: y,
+          y2: y + ARROW_LENGTH
+        }
+        this._appendShape("arrow", arrowAttribute);
+        y = y + ARROW_LENGTH;
+      }
+    }
+    
+    this._insertTo("body")
   }
 
 
@@ -87,13 +105,13 @@ export default class MViz {
       ...DEFAULT_TEXT_ATTRIBUTES,
       ...attr
     };
-    const {label, dx, dy, fill, textAnchor} = attr;
+    const {label, x, y, fill, textAnchor} = attr;
     if (!label) {
       return this;
     }
     this.svg.append("text")
-            .attr("dx", dx)
-            .attr("dy", dy)
+            .attr("x", x)
+            .attr("y", y)
             .style("fill", fill)
             .text(label)
             .style("text-anchor", textAnchor);
@@ -115,6 +133,8 @@ export default class MViz {
         return this._rect(attr);
       case "text":
         return this._text(attr);
+      case "arrow":
+        return this._arrow(attr);
       default:
         console.error("unrecognized shape " + shape);
     }
