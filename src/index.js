@@ -1,5 +1,3 @@
-export function f() {
-  console.log("s");
-}
+import MViz from './js/components/MViz';
 
-console.log("this is a test");
+new MViz().arrow().block().draw();

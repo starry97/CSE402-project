@@ -78,17 +78,13 @@
 
   <!-- Projects Section -->
   <section id="projects" class="projects-section bg-light">
-    <div class="container">
-      <div id="simple"></div>
-    </div>
+      <input type="file" id="upload_file" name="file" />  
   </section>
 
   <!-- Contact Section -->
   <section class="contact-section bg-black">
     <div class="container">
-
       <div class="row">
-
         <div class="col-md-4 mb-3 mb-md-0">
           <div class="card py-4 h-100">
             <div class="card-body text-center">
@@ -143,7 +139,7 @@
   <!-- Footer -->
   <footer class="bg-black small text-center text-white-50">
     <div class="container">
-      Copyright &copy; Your Website 2019
+      CSE402 Spring 2019 Project
     </div>
   </footer>
 
@@ -154,8 +150,24 @@
   <script src="bootstrap/vendor/jquery-easing/jquery.easing.min.js"></script>
   <!-- Custom scripts for this template -->
   <script src="bootstrap/js/grayscale.min.js"></script>
+  <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>    
+  <script type="text/javascript" src="dist/bundle.js"></script>    
 
-  <script type = "text/javascript" src = "https://d3js.org/d3.v4.min.js"></script>    
-  <script type = "text/javascript" src = "dist/bundle.js"></script>    
+  <script>
+    function handleFileSelect(evt) {
+      const f = evt.target.files[0]; 
+      if (f) {
+        const r = new FileReader();
+        r.onloadend = function(e) { 
+          const content = e.target.result;
+          console.log(content);
+        }
+        r.readAsText(f);
+      } else {
+        throw new Error("Cannot read file");
+      } 
+    }
+    document.getElementById('upload_file').addEventListener('change', handleFileSelect, false);
+  </script>
 </body>
 </html>
