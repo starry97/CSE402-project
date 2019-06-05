@@ -1,14 +1,18 @@
-import SummaryParser from './SummaryParser';
+import { DEFAULT_ARROW_ATTRIBUTES, DEFAULT_TEXT_ATTRIBUTES, DEFAULT_RECT_ATTRIBUTES } from "../utils/constants";
 
 export default class MViz {
-  constructor(parsedJSON) {
-    this.parsedJSON = parsedJSON;
+  constructor(json = "{}") {
+    this.parsedJSON = JSON.parse(json);
     this.svg = d3.select(document.createElementNS(d3.namespaces.svg, 'svg'))
     .attr("width", 500)
     .attr("height", 500);
   }
 
-  arrow(attr) {
+  arrow(attr = {}) {
+    attr = {
+      ...DEFAULT_ARROW_ATTRIBUTES,
+      ...attr
+    };
     const {x1, x2, y1, y2} = attr;
     const arrowOffset = 5;
     //arrow pointer
@@ -35,23 +39,40 @@ export default class MViz {
     return this;
   }
 
-  block(attr) {
-    const {x, y, width, height} = attr;
+  rect(attr = {}) {
+    attr = {
+      ...DEFAULT_RECT_ATTRIBUTES,
+      ...attr
+    };
+    const {x, y, width, height, fill, stroke} = attr;
     this.svg.append("rect")
                 .attr("x", x)
                 .attr("y", y)
                 .attr("width", width)
-                .attr("height", height);
+                .attr("height", height)
+                .style("fill", fill)
+                .style("stroke", stroke);
     return this;
   }
 
-  append(divName) {
-    d3.select(divName).append(function() {
-      return svg.node();
-    });
+  text(attr = {}) {
+    attr = {
+      ...DEFAULT_TEXT_ATTRIBUTES,
+      ...attr
+    };
+    const {label, dx, dy, fill, textAnchor} = attr;
+    this.svg.append("text")
+            .attr("dx", dx)
+            .attr("dy", dy)
+            .style("fill", fill)
+            .text(label)
+            .style("text-anchor", textAnchor);
+    return this;
   }
 
-  draw() {
-
+  draw(divName = "body") {
+    d3.select(divName).append(() => {
+      return this.svg.node();
+    });
   }
 }
