@@ -1,8 +1,8 @@
 import SummaryParser from './SummaryParser';
 
 export default class MViz {
-  constructor(summaryFile) {
-    this.parsedJSON = new SummaryParser(summaryFile).parse();
+  constructor(parsedJSON) {
+    this.parsedJSON = parsedJSON;
     this.svg = d3.select(document.createElementNS(d3.namespaces.svg, 'svg'))
     .attr("width", 500)
     .attr("height", 500);
@@ -35,7 +35,7 @@ export default class MViz {
     return this;
   }
 
-  block() {
+  block(attr) {
     const {x, y, width, height} = attr;
     this.svg.append("rect")
                 .attr("x", x)
@@ -45,9 +45,13 @@ export default class MViz {
     return this;
   }
 
-  draw(divName) {
+  append(divName) {
     d3.select(divName).append(function() {
       return svg.node();
     });
+  }
+
+  draw() {
+
   }
 }

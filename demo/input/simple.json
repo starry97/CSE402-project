@@ -6,7 +6,7 @@
     },
     {
       "type": "Dense",
-      "name": "dense_1"
+      "name": "dense_2"
     }
   ],
   "attributes": [{
@@ -14,7 +14,8 @@
       "shape": "rect",
       "color": "white",
       "width": "150px",
-      "height": "50px"
+      "height": "50px",
+      "text": ["name"]
     }
   }]
 }

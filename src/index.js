@@ -1,3 +1,2 @@
-import MViz from './js/components/MViz';
-
-new MViz().arrow().block().draw();
+import {handleFileSelect} from './js/components/handleFile'
+document.getElementById('upload_file').addEventListener('change', handleFileSelect, false);

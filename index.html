@@ -153,21 +153,5 @@
   <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>    
   <script type="text/javascript" src="dist/bundle.js"></script>    
 
-  <script>
-    function handleFileSelect(evt) {
-      const f = evt.target.files[0]; 
-      if (f) {
-        const r = new FileReader();
-        r.onloadend = function(e) { 
-          const content = e.target.result;
-          console.log(content);
-        }
-        r.readAsText(f);
-      } else {
-        throw new Error("Cannot read file");
-      } 
-    }
-    document.getElementById('upload_file').addEventListener('change', handleFileSelect, false);
-  </script>
 </body>
 </html>
