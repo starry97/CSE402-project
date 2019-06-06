@@ -22,7 +22,7 @@
 
   <!-- Custom styles for this template -->
   <link href="bootstrap/css/grayscale.min.css" rel="stylesheet">
-  <link href="css/project.css" rel="stylesheet">
+  <link href="src/css/index.css" rel="stylesheet">
 
 </head>
 
@@ -42,7 +42,7 @@
             <a class="nav-link js-scroll-trigger" href="#about">About</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#projects">Projects</a>
+            <a class="nav-link js-scroll-trigger" href="#project">Project</a>
           </li>
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="#signup">Contact</a>
@@ -58,7 +58,7 @@
       <div class="mx-auto text-center">
         <h1 class="mx-auto my-0 text-uppercase">Grayscale</h1>
         <h2 class="text-white-50 mx-auto mt-2 mb-5">A free, responsive, one page Bootstrap theme created by Start Bootstrap.</h2>
-        <a href="#about" class="btn btn-primary js-scroll-trigger">Get Started</a>
+        <a href="#project" class="btn btn-primary js-scroll-trigger">Get Started</a>
       </div>
     </div>
   </header>
@@ -78,8 +78,11 @@
   </section>
 
   <!-- Projects Section -->
-  <section id="projects" class="projects-section text-center">
-      <input type="file" id="upload_file" name="file" />
+  <section id="project" class="projects-section bg-light">
+      <div id="download_buttons"></div>
+      <div id="viz_container"></div>
+      <input type="file" id="upload_file" name="file" />  
+      <br/>
   </section>
 
   <!-- Contact Section -->
@@ -151,8 +154,11 @@
   <script src="bootstrap/vendor/jquery-easing/jquery.easing.min.js"></script>
   <!-- Custom scripts for this template -->
   <script src="bootstrap/js/grayscale.min.js"></script>
+
   <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>    
   <script type="text/javascript" src="dist/bundle.js"></script>    
+  
+
 
 </body>
 </html>

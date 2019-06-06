@@ -9,7 +9,7 @@ export function handleFileSelect(evt) {
         const content = e.target.result;
         const sp = new SummaryParser(content);
         const json = sp.parse();
-        const mViz = new MViz(json);
+        new MViz(json).draw();
       }
       r.readAsText(f);
     } else {

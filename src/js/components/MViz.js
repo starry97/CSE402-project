@@ -1,9 +1,10 @@
-import { DEFAULT_ARROW_ATTRIBUTES, DEFAULT_TEXT_ATTRIBUTES, DEFAULT_RECT_ATTRIBUTES, DEFAULT_ARROW_WITH_TEXT_ATTRIBUTES, ARROW_LENGTH, TEXT_OFFSET, ARROW_OFFSET, TEXT_HEIGHT } from "../utils/constants";
+import { DEFAULT_ARROW_ATTRIBUTES, DEFAULT_TEXT_ATTRIBUTES, DEFAULT_RECT_ATTRIBUTES, DEFAULT_ARROW_WITH_TEXT_ATTRIBUTES, ARROW_LENGTH, TEXT_OFFSET, ARROW_OFFSET, TEXT_HEIGHT, SVG_ID } from "../utils/constants";
 
 export default class MViz {
   constructor(json = "{}", divName) {
     this.parsedJSON = JSON.parse(json);
     this.svg = d3.select(document.createElementNS(d3.namespaces.svg, 'svg'))
+                .attr("id", SVG_ID)
                 .attr("width", 500)
                 .attr("height", 20000);
     this.divName = divName;
@@ -58,7 +59,7 @@ export default class MViz {
       }
     }
     
-    this._insertTo("body")
+    this._insertTo("#viz_container")
   }
 
   _arrowWithText(attr = {}) {
