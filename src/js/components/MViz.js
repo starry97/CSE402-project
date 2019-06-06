@@ -1,9 +1,10 @@
-import { DEFAULT_ARROW_ATTRIBUTES, DEFAULT_TEXT_ATTRIBUTES, DEFAULT_RECT_ATTRIBUTES, ARROW_LENGTH } from "../utils/constants";
+import { DEFAULT_ARROW_ATTRIBUTES, DEFAULT_TEXT_ATTRIBUTES, DEFAULT_RECT_ATTRIBUTES, ARROW_LENGTH, SVG_ID } from "../utils/constants";
 
 export default class MViz {
   constructor(json = "{}", divName) {
     this.parsedJSON = JSON.parse(json);
     this.svg = d3.select(document.createElementNS(d3.namespaces.svg, 'svg'))
+                .attr("id", SVG_ID)
                 .attr("width", 500)
                 .attr("height", 500);
     this.divName = divName;

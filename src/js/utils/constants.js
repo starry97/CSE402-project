@@ -1,6 +1,7 @@
 export const DENSE = 'Dense';
 export const CONV_2D = 'Conv2D';
 export const MAX_POOLING_2D = 'MaxPooling2D';
+export const SVG_ID = "__svg";
 
 export const RECT_ATTR = '{"shape": "rect", \
                             "color": "white", \
