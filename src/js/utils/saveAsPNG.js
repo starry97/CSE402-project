@@ -9,7 +9,7 @@ export function saveAsPNG(svgNode) {
 	function save(dataBlob) {
 		saveAs(dataBlob, 'MViz.png' ); // FileSaver.js function
 	}
-};
+}
 
 function svgToImage(svgString, width, height, callback) {
 	const imgsrc = 'data:image/svg+xml;base64,'+ btoa(unescape(encodeURIComponent(svgString))); // Convert SVG string to data URL
@@ -71,22 +71,22 @@ export function getSVGString(svgNode) {
 		}
 
 		// Extract CSS Rules
-		const extractedCSSText = "";
+		let extractedCSSText = "";
 		for (let i = 0; i < document.styleSheets.length; i++) {
 			const s = document.styleSheets[i];
 			
 			try {
-			    if(!s.cssRules) continue;
-			} catch( e ) {
-		    		if(e.name !== 'SecurityError') throw e; // for Firefox
-		    		continue;
-		    	}
-			const cssRules = s.cssRules;
-			for (let r = 0; r < cssRules.length; r++) {
-				if ( contains( cssRules[r].selectorText, selectorTextArr ) )
-					extractedCSSText += cssRules[r].cssText;
+				if(!s.cssRules) continue;
+			} catch (e) {
+				if (e.name !== 'SecurityError') throw e; // For firefox
+					continue;
+				}
+				const cssRules = s.cssRules;
+				for (let r = 0; r < cssRules.length; r++) {
+					if ( contains( cssRules[r].selectorText, selectorTextArr ) )
+						extractedCSSText += cssRules[r].cssText;
+				}
 			}
-		}
 
 		return extractedCSSText;
 
@@ -96,7 +96,7 @@ export function getSVGString(svgNode) {
   }
 }
 
-function appendCSS( cssText, element ) {
+function appendCSS(cssText, element) {
   const styleElement = document.createElement("style");
   styleElement.setAttribute("type","text/css"); 
   styleElement.innerHTML = cssText;

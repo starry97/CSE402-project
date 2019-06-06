@@ -50,7 +50,7 @@ export default class MViz {
       }
     }
     
-    this._insertTo("body")
+    this._insertTo("#viz_container")
   }
 
 
