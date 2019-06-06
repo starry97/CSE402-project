@@ -1,18 +1,28 @@
-import { DEFAULT_ARROW_ATTRIBUTES, DEFAULT_TEXT_ATTRIBUTES, DEFAULT_RECT_ATTRIBUTES, ARROW_LENGTH } from "../utils/constants";
+import { DEFAULT_ARROW_ATTRIBUTES, DEFAULT_TEXT_ATTRIBUTES, DEFAULT_RECT_ATTRIBUTES, DEFAULT_ARROW_WITH_TEXT_ATTRIBUTES, ARROW_LENGTH, TEXT_OFFSET, ARROW_OFFSET, TEXT_HEIGHT } from "../utils/constants";
 
 export default class MViz {
   constructor(json = "{}", divName) {
     this.parsedJSON = JSON.parse(json);
     this.svg = d3.select(document.createElementNS(d3.namespaces.svg, 'svg'))
                 .attr("width", 500)
-                .attr("height", 500);
+                .attr("height", 20000);
     this.divName = divName;
   }
 
   draw() {
     const {layers, attributes} = this.parsedJSON;
     let y = 0;
+    let x = 0;
     for (let i = 0; i < layers.length; i++) {
+      let nextShape = null;
+      if (i != layers.length - 1) {
+        const nextLayer = layers[i + 1];
+        const nextType = nextLayer["type"];
+        nextShape = attributes[nextType]["shape"];
+        console.log("next shape is " + nextShape);
+      }
+
+      // draw current layer
       const layer = layers[i];
       const {name, type} = layer;
       const attr = {
@@ -20,31 +30,30 @@ export default class MViz {
         ...attributes[type]
       }
       const {text, shape, ...styleAttr} = attr;
-      const rectAttribute = {
-        ...DEFAULT_RECT_ATTRIBUTES,
-        y,
-        ...styleAttr
-      }
+      this._appendShape(shape, {x: x, y: y, ...styleAttr});
 
-      let label = "";
+      // draw label on current shape 
       if (text) {
+        let label = ""
         for (let i = 0; i < text.length; i++) {
           label += layer[text[i]];
         }
+
+        console.log("label " + label)
+        console.log(styleAttr.height)
+
+        this._appendShape("text", {
+          label,
+          y: y + parseInt(styleAttr.height) / 2 + TEXT_OFFSET,
+          fill: (shape == "arrow_with_text") ?  "black" : "white"
+        });
       }
 
-      this._appendShape(shape, rectAttribute);
-      y += parseInt(rectAttribute.height);
-      this._appendShape("text", {
-            label,
-            y: y - parseInt(rectAttribute.height) / 2 
-      });
-      if (i != layers.length - 1) {
-        const arrowAttribute = {
-          y1: y,
-          y2: y + ARROW_LENGTH
-        }
-        this._appendShape("arrow", arrowAttribute);
+      y += parseInt(styleAttr.height);
+
+      // draw arrow between rect and rect
+      if (i != layers.length - 1 && shape == "rect" && nextShape == "rect") {
+        this._appendShape("arrow", {x: x, y: y});
         y = y + ARROW_LENGTH;
       }
     }
@@ -52,6 +61,33 @@ export default class MViz {
     this._insertTo("body")
   }
 
+  _arrowWithText(attr = {}) {
+    //line             
+    attr = {
+      ...DEFAULT_ARROW_WITH_TEXT_ATTRIBUTES,
+      ...attr
+    };
+    const {x1, x2, y1, y2, y3, y4} = attr; 
+    // line
+    this.svg.append("line")
+          .attr("x1", x1)
+          .attr("y1", y1)
+          .attr("x2", x2)
+          .attr("y2", y2 - ARROW_OFFSET)          
+          .attr("stroke-width", 1)
+          .attr("stroke", "black")
+
+    //line with arrow            
+    this.svg.append("line")
+          .attr("x1", x1)
+          .attr("y1", y3)
+          .attr("x2", x2)
+          .attr("y2", y4 - ARROW_OFFSET)          
+          .attr("stroke-width", 1)
+          .attr("stroke", "black")
+          .attr("marker-end", "url(#triangle)");
+    return this;
+  }
 
   _arrow(attr = {}) {
     attr = {
@@ -59,7 +95,7 @@ export default class MViz {
       ...attr
     };
     const {x1, x2, y1, y2} = attr;
-    const arrowOffset = 5;
+    
     //arrow pointer
     this.svg.append("svg:defs").append("svg:marker")
                 .attr("id", "triangle")
@@ -77,7 +113,7 @@ export default class MViz {
           .attr("x1", x1)
           .attr("y1", y1)
           .attr("x2", x2)
-          .attr("y2", y2 - arrowOffset)          
+          .attr("y2", y2 - ARROW_OFFSET)          
           .attr("stroke-width", 1)
           .attr("stroke", "black")
           .attr("marker-end", "url(#triangle)");
@@ -109,6 +145,8 @@ export default class MViz {
     if (!label) {
       return this;
     }
+    console.log("x is " + x)
+    console.log("y is " + y)
     this.svg.append("text")
             .attr("x", x)
             .attr("y", y)
@@ -134,7 +172,19 @@ export default class MViz {
       case "text":
         return this._text(attr);
       case "arrow":
-        return this._arrow(attr);
+        const arrowAttr = {
+          y1: attr.y,
+          y2: attr.y + ARROW_LENGTH
+        }
+        return this._arrow(arrowAttr);
+      case "arrow_with_text":
+        const arrowWithTextAttr = {
+          y1: attr.y, 
+          y2: attr.y + ARROW_LENGTH / 2,
+          y3: attr.y + ARROW_LENGTH / 2 + TEXT_HEIGHT,
+          y4: attr.y + ARROW_LENGTH + TEXT_HEIGHT
+        }
+        return this._arrowWithText(arrowWithTextAttr);
       default:
         console.error("unrecognized shape " + shape);
     }

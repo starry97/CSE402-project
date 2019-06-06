@@ -1,4 +1,4 @@
-import { DENSE, RECT_ATTR, CONV_2D, MAX_POOLING_2D } from '../utils/constants';
+import { DENSE, RECT_ATTR, CONV_2D, MAX_POOLING_2D, ARROW_WITH_TEXT_ATTR } from '../utils/constants';
 
 export default class SummaryParser {
     constructor(file) {
@@ -23,10 +23,16 @@ export default class SummaryParser {
 
         let attributes = {};
         existTypes.forEach(type => {
-            attributes[type] = JSON.parse(RECT_ATTR);
+            if (type == MAX_POOLING_2D) {
+                attributes[type] = JSON.parse(ARROW_WITH_TEXT_ATTR);
+            } else {
+                attributes[type] = JSON.parse(RECT_ATTR);
+            }
         });
 
         const modelJson = {"layers": model, "attributes": attributes}; 
+
+        console.log(JSON.stringify(modelJson))
 
         return JSON.stringify(modelJson);
     }
