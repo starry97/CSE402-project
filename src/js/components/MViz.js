@@ -4,9 +4,7 @@ export default class MViz {
   constructor(json = "{}", divName) {
     this.parsedJSON = JSON.parse(json);
     this.svg = d3.select(document.createElementNS(d3.namespaces.svg, 'svg'))
-                .attr("id", SVG_ID)
-                .attr("width", 500)
-                .attr("height", 20000);
+                .attr("id", SVG_ID);
     this.divName = divName;
   }
 
@@ -20,7 +18,6 @@ export default class MViz {
         const nextLayer = layers[i + 1];
         const nextType = nextLayer["type"];
         nextShape = attributes[nextType]["shape"];
-        console.log("next shape is " + nextShape);
       }
 
       // draw current layer
@@ -40,9 +37,6 @@ export default class MViz {
           label += layer[text[i]];
         }
 
-        console.log("label " + label)
-        console.log(styleAttr.height)
-
         this._appendShape("text", {
           label,
           y: y + parseInt(styleAttr.height) / 2 + TEXT_OFFSET,
@@ -58,8 +52,11 @@ export default class MViz {
         y = y + ARROW_LENGTH;
       }
     }
-    
-    this._insertTo("#viz_container")
+    this._insertTo("#viz_container");
+
+    const bbox = this.svg.node().getBBox();
+    this.svg.attr("width", bbox.x + bbox.width  + "px"); 
+    this.svg.attr("height",bbox.y + bbox.height + "px");
   }
 
   _arrowWithText(attr = {}) {
@@ -146,8 +143,7 @@ export default class MViz {
     if (!label) {
       return this;
     }
-    console.log("x is " + x)
-    console.log("y is " + y)
+  
     this.svg.append("text")
             .attr("x", x)
             .attr("y", y)
