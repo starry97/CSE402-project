@@ -3,6 +3,7 @@ import { saveAsPNG } from './js/utils/saveAsPNG';
 import { SVG_ID } from './js/utils/constants';
 import { saveAsSVG } from './js/utils/saveAsSVG';
 
+
 document.getElementById('upload_file').addEventListener('change', (evt) => {
   handleFileSelect(evt);
   document.getElementById('viz_container').innerHTML = "";

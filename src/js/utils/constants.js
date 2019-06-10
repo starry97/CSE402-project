@@ -2,6 +2,7 @@ export const DENSE = 'Dense';
 export const CONV_2D = 'Conv2D';
 export const MAX_POOLING_2D = 'MaxPooling2D';
 export const SVG_ID = "__svg";
+export const VIZ_CONTAINER = "viz_container";
 
 export const RECT_ATTR = '{"shape": "rect", \
                             "color": "white", \
@@ -13,6 +14,10 @@ export const ARROW_WITH_TEXT_ATTR = '{"shape": "arrow_with_text", \
                             "color": "black", \
                             "height": "80", \
                             "text": ["name"]}'
+
+export const TEXT_OFFSET = 2;
+export const ARROW_OFFSET = 5;
+export const TEXT_HEIGHT = 10;
 
 // default attributes 
 const width = 150;
@@ -28,16 +33,12 @@ export const DEFAULT_RECT_ATTRIBUTES = {
 }
 
 export const ARROW_LENGTH = 75;
-export const DEFAULT_ARROW_ATTRIBUTES = {
-  x1: width / 2,
-  x2: width / 2,
-  y1: height,
-  y2: height + ARROW_LENGTH,
-}
 
-export const TEXT_OFFSET = 2;
-export const ARROW_OFFSET = 5;
-export const TEXT_HEIGHT = 10;
+export const DEFAULT_ARROW_ATTRIBUTES = {
+  x: width / 2,
+  y: height,
+  length: ARROW_LENGTH
+}
 
 export const DEFAULT_TEXT_ATTRIBUTES = {
   x: width / 2,

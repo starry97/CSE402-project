@@ -1,8 +1,9 @@
-import { DEFAULT_ARROW_ATTRIBUTES, DEFAULT_TEXT_ATTRIBUTES, DEFAULT_RECT_ATTRIBUTES, DEFAULT_ARROW_WITH_TEXT_ATTRIBUTES, ARROW_OFFSET } from "../utils/constants";
+import { DEFAULT_TEXT_ATTRIBUTES, DEFAULT_RECT_ATTRIBUTES, DEFAULT_ARROW_WITH_TEXT_ATTRIBUTES, ARROW_OFFSET, DEFAULT_VERTICAL_ARROW_ATTRIBUTES, DEFAULT_ARROW_ATTRIBUTES } from "../utils/constants";
 
 export class Shape {
-    constructor(svg) {
+    constructor(svg, isVertical=true) {
         this.svg = svg;
+        this.isVertical = isVertical
     }
 
   arrowWithText(attr = {}) {
@@ -38,8 +39,19 @@ export class Shape {
       ...DEFAULT_ARROW_ATTRIBUTES,
       ...attr
     };
-    const {x1, x2, y1, y2} = attr;
-    
+    const {x, y, length} = attr;
+    let x1, x2, y1, y2;
+    if (this.isVertical) {
+      x1 = x;
+      x2 = x;
+      y1 = y;
+      y2 = y + length - ARROW_OFFSET;
+    } else {
+      x1 = x;
+      x2 = x + length - ARROW_OFFSET;
+      y1 = y;
+      y2 = y;
+    }
     //arrow pointer
     this.svg.append("svg:defs").append("svg:marker")
                 .attr("id", "triangle")
@@ -57,7 +69,7 @@ export class Shape {
           .attr("x1", x1)
           .attr("y1", y1)
           .attr("x2", x2)
-          .attr("y2", y2 - ARROW_OFFSET)          
+          .attr("y2", y2)          
           .attr("stroke-width", 1)
           .attr("stroke", "black")
           .attr("marker-end", "url(#triangle)");
