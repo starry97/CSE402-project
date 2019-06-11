@@ -19,6 +19,11 @@ export function parseSummaryToJSON(data) {
                   }
                   layerJson["subLayers"] = subLayers;
               }
+              if (type == LSTM) {
+                layerJson["connection"] = 1;
+              } else {
+                layerJson["connection"] = 0;
+              }
               model.push(layerJson);
               existTypes.add(type);
           }      

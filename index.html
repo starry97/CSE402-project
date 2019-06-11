@@ -18,10 +18,8 @@
   <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
-  <link href="bootstrap/css/simple.css" rel="stylesheet">
-
   <!-- Custom styles for this template -->
-  <link href="bootstrap/css/grayscale.min.css" rel="stylesheet">
+  <link href="bootstrap/css/grayscale.css" rel="stylesheet">
   <link href="src/css/index.css" rel="stylesheet">
 
 </head>
@@ -42,10 +40,10 @@
             <a class="nav-link js-scroll-trigger" href="#about">About</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#project">Project</a>
+            <a class="nav-link js-scroll-trigger" href="#demo">Demo</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="#signup">Team</a>
+            <a class="nav-link js-scroll-trigger" href="#team">Team</a>
           </li>
         </ul>
       </div>
@@ -60,7 +58,7 @@
         <h2 class="text-white-50 mx-auto mt-2 mb-5">
           An extensible and expressive visualization library for Keras models.
         </h2>
-        <a href="#project" class="btn btn-primary js-scroll-trigger">Demo</a>
+        <a href="#demo" class="btn btn-primary js-scroll-trigger">Demo</a>
       </div>
     </div>
   </header>
@@ -78,27 +76,37 @@
           </p>
         </div>
       </div>
-      <img src="bootstrap/img/ipad.png" class="img-fluid" alt="">
     </div>
   </section>
 
   <!-- Projects Section -->
-  <section id="project" class="projects-section bg-light">
-      <div id="download_buttons"></div>
-      <div id="viz_container"></div>
-      <div>
-        <label for="upload_summary_file" class="btn btn-primary btn-block btn-outlined">Choose Keras Summary File</label>
-        <input type="file" id="upload_summary_file" style="visibility:hidden">
-      </div>
-      <div>
-        <label for="upload_json_file" class="btn btn-primary btn-block btn-outlined">Choose MViz JSON File</label>
-        <input type="file" id="upload_json_file" style="visibility:hidden">
+  <section id="demo" class="projects-section bg-light">
+      <div id="project">
+          <div class="split" id="one">
+              <h5>Instruction</h5>
+              <p class="text-black-50" style="margin-bottom: 50px">
+                load a Keras summary file or a JSON file produced by MViz.
+              </p>
+              
+              <div class="upload_buttons">
+                  <label for="upload_summary_file" class="btn-sm btn-secondary upload_file">Choose Keras Summary File</label>
+                  <input type="file" id="upload_summary_file" style="visibility:hidden">
+                </div>
+                <div class="upload_buttons">
+                  <label for="upload_json_file" class="btn-sm btn-secondary upload_file">Choose MViz JSON File</label>
+                  <input type="file" id="upload_json_file" style="visibility:hidden">
+                </div>
+          </div>
+          <div class="split" id="two">
+              <div id="download_buttons"></div>
+              <div id="viz_container"></div>
+          </div>
       </div>
       <br/>
   </section>
 
-  <!-- Contact Section -->
-  <section class="contact-section bg-black">
+  <!-- Team Section -->
+  <section id="team" class="contact-section bg-black">
     <div class="container">
       <div class="row">
         <div class="col mb-2 mb-md-0">
@@ -152,7 +160,9 @@
   <!-- Custom scripts for this template -->
   <script src="bootstrap/js/grayscale.min.js"></script>
 
-  <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>    
+  <script src="https://unpkg.com/split.js/dist/split.min.js"></script>
+
+  <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>      
   <script type="text/javascript" src="dist/bundle.js"></script>    
   
 

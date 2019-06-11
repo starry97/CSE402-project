@@ -1,4 +1,4 @@
-import { ARROW_LENGTH } from '../utils/constants';
+import { ARROW_LENGTH, DIR_R, DIR_D, NUM_SUBLAYERS, SVG_Y_OFFSET, SVG_X_OFFSET } from '../utils/constants';
 
 export function parseJSONToD3Data(jsonStr) {
   const jsonObj = JSON.parse(jsonStr);
@@ -8,11 +8,13 @@ export function parseJSONToD3Data(jsonStr) {
     links: []
   };
   
-  let y = 0;
-  let x = 0;
+  let y = SVG_Y_OFFSET;
+  let x = SVG_X_OFFSET;
+  let hasSub = false;
   for (let i = 0; i < layers.length; i++) {
     const layer = layers[i];
-    const {name, type} = layer;
+    const {name, type, subLayers} = layer;
+    
     let nextLayer, nextType, nextShape;
     if (i != layers.length - 1) {
       nextLayer = layers[i + 1];
@@ -27,52 +29,98 @@ export function parseJSONToD3Data(jsonStr) {
     // don't include text in attr
     const {text, ...styleAttr} = attr;
     const {shape} = attr;
-    const label = getLabel(layer, text);
 
-    if (shape == "rect") {
-      result.nodes.push({
-        ...getDefaultAttr(shape),
-        x,
-        y,
-        label,
-        ...styleAttr,
-        ...layer,
-      });
-    } else if (shape == "text") {
-      result.nodes.push({
-        ...getDefaultAttr(shape),
-        x,
-        y,
-        label,
-        ...styleAttr,
-        ...layer,
-      });
+    if (subLayers) {
+      hasSub = true;
+    }
+
+    if (hasSub && !subLayers) {
+      x = (getDefaultAttr(shape).width + ARROW_LENGTH) * (NUM_SUBLAYERS - 1);
     }
     
 
-    if (i != layers.length - 1) {      
-      if (nextShape == "rect" || nextShape == "text") {
-        // draw text shape as a text in front of a small white rect.
-        result.links.push({
-          source: name,
-          destination: nextLayer.name
+    const divide = subLayers ? subLayers.length : 1;
+    const connection = layer.connection;
+    let dx = 0;
+
+    for (let j = 0; j < divide; j++) {
+      const label = getLabel(layer, text, subLayers, j);
+      layer.name = label;
+      if (shape == "rect") {
+        result.nodes.push({
+          ...getDefaultAttr(shape),
+          x: x + dx,
+          y,
+          label,
+          ...styleAttr,
+          ...layer,
         });
-        y += ARROW_LENGTH;
+      } else if (shape == "text") {
+        result.nodes.push({
+          ...getDefaultAttr(shape),
+          x: x + dx,
+          y,
+          label,
+          ...styleAttr,
+          ...layer,
+        });
       }
+
+      if (subLayers && connection > 0) {
+        if (j != subLayers.length - 1) {
+          result.links.push({
+            source: subLayers[j],
+            destination: subLayers[j + 1],
+            dir: DIR_R
+          });
+        }
+      }
+
+      if (i != layers.length - 1) {      
+        if (nextShape == "rect" || nextShape == "text") {
+          // draw text shape as a text in front of a small white rect.
+          if (subLayers && !nextLayer.subLayers) {
+            // default subLayers to no sublayers, the next layer 
+            // will be connected and located under the last sublayer
+            if (j == subLayers.length - 1) {
+              result.links.push({
+                source: subLayers ? subLayers[j] : name,
+                destination: nextLayer.name,
+                dir: DIR_D
+              });
+            }
+          } else {
+            result.links.push({
+              source: subLayers ? subLayers[j] : name,
+              destination: nextLayer.subLayers ? nextLayer.subLayers[j] : nextLayer.name,
+              dir: DIR_D
+            });
+          }
+          
+        }
+      }
+
+      dx += getDefaultAttr(shape).width + ARROW_LENGTH;
     }
+
+    y += getDefaultAttr(shape).height + ARROW_LENGTH;
   }
-  console.log(JSON.stringify(result));
+  //console.log(JSON.stringify(result));
   return JSON.stringify(result);
 }
 
 
-function getLabel(layer, text) {
+function getLabel(layer, text, subLayers, subIdx) {
   let label = ""
   if (!text) {
     return;
   }
   for (let i = 0; i < text.length; i++) {
-    label += layer[text[i]];
+    if (text[i] == "name" && subLayers) {
+      label += subLayers[subIdx];
+    } else {
+      label += layer[text[i]];
+    }
   }
   return label;
 }

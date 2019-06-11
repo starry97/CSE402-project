@@ -12,6 +12,11 @@ export const NUM_SUBLAYERS = 4;
 export const VIZ_CONTAINER = "viz_container";
 export const ARROW_WITH_TEXT = "arrow_with_text";
 
+export const DIR_L = "left";
+export const DIR_R = "right";
+export const DIR_U = "up";
+export const DIR_D = "down";
+
 export const RECT_ATTR = {
   "shape": "rect",
   "text": ["name"]
@@ -65,5 +70,8 @@ export const DEFAULT_TEXT_ATTRIBUTES = {
   fill: "white",
   textAnchor: "middle"
 }
+
+export const SVG_X_OFFSET = 50;
+export const SVG_Y_OFFSET = 50;
 
 
