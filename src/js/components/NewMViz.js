@@ -5,7 +5,8 @@ export function drawViz(data, containerID = "body") {
   const svg = d3.select(containerID)
     .append("svg")
     .attr("width", 1200)
-    .attr("height", 800);  
+    .attr("height", 800)
+    .attr("id", SVG_ID); 
 
   const getTextX = (d) => {
     return d.x + d.width / 2;
@@ -40,7 +41,7 @@ export function drawViz(data, containerID = "body") {
         }
       });
     });
-    console.log(parsedData);
+
     const links = svg.selectAll("link")
       .data(parsedData.links)
       .enter()
@@ -110,6 +111,3 @@ export function drawViz(data, containerID = "body") {
         .attr("d", "M 0 0 12 6 0 12 3 6")
         .style("fill", "black");
   }
-
-    
-  
