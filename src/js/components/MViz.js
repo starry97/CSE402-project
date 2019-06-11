@@ -2,12 +2,16 @@ import { ARROW_LENGTH, TEXT_OFFSET, TEXT_HEIGHT, SVG_ID } from "../utils/constan
 import { Shape } from "./drawShape"; 
 
 export default class MViz {
-  constructor(json = "{}", divName) {
+  constructor(json="{}", divName="body", isVertical=true) {
     this.parsedJSON = JSON.parse(json);
+    this.isVertical = isVertical;
+    // svg will be resized
     this.svg = d3.select(document.createElementNS(d3.namespaces.svg, 'svg'))
-                .attr("id", SVG_ID);
+                .attr("id", SVG_ID)
+                .attr("width", 0)
+                .attr("height", 0);
     this.divName = divName;
-    this.shape = new Shape(this.svg);
+    this.shape = new Shape(this.svg, isVertical);
   }
 
   draw() {
@@ -26,17 +30,26 @@ export default class MViz {
       const layer = layers[i];
       const {name, type, subLayers} = layer;
       const attr = {
-        ...attributes[name],
-        ...attributes[type]
+        ...attributes[type],
+        ...attributes[name]
       }
       const {text, shape, ...styleAttr} = attr;
       const divide = subLayers ? subLayers.length : 1;
       let dx = x;
 
-      console.log("divide is " + divide);
-
+      const width = parseInt(styleAttr.width);
+      const height = parseInt(styleAttr.height);
+      
       for (let i = 0; i < divide; i++) {
-        this._appendShape(shape, {x: dx, y: y, ...styleAttr});
+        if (shape === "arrow_with_text") {
+          if (this.isVertical) {
+            this._appendShape(shape, {x: dx + width / 2, y: y, ...styleAttr});
+          } else {
+            this._appendShape(shape, {x: dx, y: y + height / 2, ...styleAttr});
+          }
+        } else {
+          this._appendShape(shape, {x: dx, y: y, ...styleAttr});
+        }  
 
         // draw label on current shape 
         if (text) {
@@ -49,6 +62,8 @@ export default class MViz {
             }
           }
 
+          const labelX = this.isVertical ? parseInt(styleAttr.width) / 2 : x + parseInt(styleAttr.width) / 2 + TEXT_OFFSET;
+          const labelY = this.isVertical ? y + parseInt(styleAttr.height) / 2 + TEXT_OFFSET : parseInt(styleAttr.height) / 2;
           this._appendShape("text", {
             label,
             x: dx + parseInt(styleAttr.width) / 2,
@@ -56,15 +71,24 @@ export default class MViz {
             fill: (shape == "arrow_with_text") ?  "black" : "white"
           });
         }
-
-        dx += parseInt(styleAttr.width);
+        
+        dx += width;
         dx += 20;
       }
 
-      y += parseInt(styleAttr.height);
+      if (this.isVertical) {
+        y += height;
+      } else {
+        x += width;
+      }
 
       // draw arrow between rect and rect
       if (i != layers.length - 1 && shape == "rect" && nextShape == "rect") {
+        
+        const arrowAttr = {
+          x: this.isVertical ? x + styleAttr.width / 2: x,
+          y: this.isVertical ? y : y + styleAttr.height / 2 
+        };
         dx = x;
         for (let i = 0; i < divide; i++) {
           console.log("dx is " + dx);
@@ -75,19 +99,24 @@ export default class MViz {
           dx += 20;
         }
         
-        y = y + ARROW_LENGTH;
+        if (this.isVertical) {
+          y = y + ARROW_LENGTH;
+        } else {
+          x = x + ARROW_LENGTH;
+        }
       }
       
     }
-    this._insertTo("#viz_container");
 
+    this._insertTo();
+    // auto size svg
     const bbox = this.svg.node().getBBox();
     this.svg.attr("width", bbox.x + bbox.width + "px"); 
     this.svg.attr("height",bbox.y + bbox.height + "px");
   }
 
-  _insertTo(divName = "body") {
-    d3.select(divName).append(() => {
+  _insertTo() {
+    d3.select(this.divName).append(() => {
       return this.svg.node();
     });
   }
@@ -102,21 +131,9 @@ export default class MViz {
       case "text":
         return this.shape.text(attr);
       case "arrow":
-        const arrowAttr = {
-          x1: attr.x,
-          x2: attr.x,
-          y1: attr.y,
-          y2: attr.y + ARROW_LENGTH
-        }
-        return this.shape.arrow(arrowAttr);
+        return this.shape.arrow(attr);
       case "arrow_with_text":
-        const arrowWithTextAttr = {
-          y1: attr.y, 
-          y2: attr.y + ARROW_LENGTH / 2,
-          y3: attr.y + ARROW_LENGTH / 2 + TEXT_HEIGHT,
-          y4: attr.y + ARROW_LENGTH + TEXT_HEIGHT
-        }
-        return this.shape.arrowWithText(arrowWithTextAttr);
+        return this.shape.arrowWithText(attr);
       default:
         console.error("unrecognized shape " + shape);
     }

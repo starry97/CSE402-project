@@ -11,6 +11,7 @@ export const MAX_POOLING_2D = 'MaxPooling2D';
 export const SVG_ID = "__svg";
 export const LAYER_TYPES = [DENSE, CONV_2D, LSTM, EMBEDDING, MAX_POOLING_2D]
 export const NUM_SUBLAYERS = 4;
+export const VIZ_CONTAINER = "viz_container";
 
 export const RECT_ATTR = '{"shape": "rect", \
                             "fill": "white", \
@@ -19,10 +20,14 @@ export const RECT_ATTR = '{"shape": "rect", \
                             "text": ["type"]}'
 
 export const ARROW_WITH_TEXT_ATTR = '{"shape": "arrow_with_text", \
-                            "fill": "black", \
-                            "height": "80", \
+                            "color": "black", \
                             "width": "150", \
-                            "text": ["type"]}'
+                            "height": "50", \
+                            "text": ["name"]}'
+
+export const TEXT_OFFSET = 2;
+export const ARROW_OFFSET = 5;
+export const TEXT_HEIGHT = 10;
 
 // default attributes 
 const width = 150;
@@ -49,16 +54,13 @@ export const DEFAULT_RECT_ATTRIBUTES = {
 }
 
 export const ARROW_LENGTH = 75;
-export const DEFAULT_ARROW_ATTRIBUTES = {
-  x1: width / 2,
-  x2: width / 2,
-  y1: height,
-  y2: height + ARROW_LENGTH,
-}
 
-export const TEXT_OFFSET = 2;
-export const ARROW_OFFSET = 5;
-export const TEXT_HEIGHT = 10;
+export const DEFAULT_ARROW_ATTRIBUTES = {
+  x: width / 2,
+  y: height,
+  length: ARROW_LENGTH,
+  textHeight: 10
+}
 
 export const DEFAULT_TEXT_ATTRIBUTES = {
   x: width / 2,
@@ -67,14 +69,4 @@ export const DEFAULT_TEXT_ATTRIBUTES = {
   textAnchor: "middle"
 }
 
-export const DEFAULT_ARROW_WITH_TEXT_ATTRIBUTES = {
- x1: width / 2,
- x2: width / 2,
- y1: height,
- y2: height + ARROW_LENGTH,
- y3: height,
- y4: height + ARROW_LENGTH,
- height: 80,
- width: 150
-}
 

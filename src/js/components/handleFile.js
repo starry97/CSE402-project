@@ -1,5 +1,6 @@
 import SummaryParser from './SummaryParser';
 import MViz from './MViz';
+import { VIZ_CONTAINER } from '../utils/constants';
 
 export function handleFileSelect(evt) {
     const f = evt.target.files[0]; 
@@ -9,7 +10,7 @@ export function handleFileSelect(evt) {
         const content = e.target.result;
         const sp = new SummaryParser(content);
         const json = sp.parse();
-        new MViz(json).draw();
+        new MViz(json, "#" + VIZ_CONTAINER, false).draw();
       }
       r.readAsText(f);
     } else {

@@ -11,6 +11,7 @@ if (DEBUG) {
   mv.draw();
 }
 
+
 document.getElementById('upload_file').addEventListener('change', (evt) => {
   handleFileSelect(evt);
   document.getElementById('viz_container').innerHTML = "";
