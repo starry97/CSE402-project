@@ -30,11 +30,21 @@ export default class MViz {
       const layer = layers[i];
       const {name, type} = layer;
       const attr = {
-        ...attributes[name],
-        ...attributes[type]
+        ...attributes[type],
+        ...attributes[name]
       }
       const {text, shape, ...styleAttr} = attr;
-      this._appendShape(shape, {x: x, y: y, ...styleAttr});
+      const width = parseInt(styleAttr.width);
+      const height = parseInt(styleAttr.height);
+      if (shape === "arrow_with_text") {
+        if (this.isVertical) {
+          this._appendShape(shape, {x: x + width / 2, y: y, ...styleAttr});
+        } else {
+          this._appendShape(shape, {x, y: y + height / 2, ...styleAttr});
+        }
+      } else {
+        this._appendShape(shape, {x: x, y: y, ...styleAttr});
+      }
 
       // draw label on current shape 
       if (text) {
@@ -43,9 +53,8 @@ export default class MViz {
           label += layer[text[i]];
         }
         
-        const labelX = this.isVertical ? styleAttr.width / 2 : x + parseInt(styleAttr.width) / 2 + TEXT_OFFSET;
-        const labelY = this.isVertical ? y + parseInt(styleAttr.height) / 2 + TEXT_OFFSET : styleAttr.height / 2;
-        
+        const labelX = this.isVertical ? parseInt(styleAttr.width) / 2 : x + parseInt(styleAttr.width) / 2 + TEXT_OFFSET;
+        const labelY = this.isVertical ? y + parseInt(styleAttr.height) / 2 + TEXT_OFFSET : parseInt(styleAttr.height) / 2;
         this._appendShape("text", {
           label,
           x: labelX,
@@ -99,20 +108,7 @@ export default class MViz {
       case "arrow":
         return this.shape.arrow(attr);
       case "arrow_with_text":
-        let arrowWithTextAttr;
-        if (this.isVertical) {
-          arrowWithTextAttr = {
-            y1: attr.y, 
-            y2: attr.y + ARROW_LENGTH / 2,
-          }
-        } else {
-          arrowWithTextAttr = {
-            x1: attr.x, 
-            x2: attr.x + ARROW_LENGTH / 2,
-          }
-        }
-        
-        return this.shape.arrowWithText(arrowWithTextAttr);
+        return this.shape.arrowWithText(attr);
       default:
         console.error("unrecognized shape " + shape);
     }

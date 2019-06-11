@@ -9,25 +9,46 @@ export class Shape {
   arrowWithText(attr = {}) {
     //line             
     attr = {
-      ...DEFAULT_ARROW_WITH_TEXT_ATTRIBUTES,
+      ...DEFAULT_ARROW_ATTRIBUTES,
       ...attr
     };
-    const {x1, x2, y1, y2, y3, y4} = attr; 
+    // TODO: ideally, textheight should be calculated based on the font size
+    const {x, y, length, textHeight} = attr;
+    const firstHalfLineLen = length / 2 - textHeight;
+    const secondHalfLineLen = length / 2;
+    let x1, x2, y1, y2;
+    if (this.isVertical) {
+      x1 = x;
+      x2 = x;
+      y1 = y;
+      y2 = y + firstHalfLineLen;
+    } else {
+      x1 = x;
+      x2 = x + firstHalfLineLen;
+      y1 = y;
+      y2 = y;
+    }
     // line
     this.svg.append("line")
           .attr("x1", x1)
           .attr("y1", y1)
           .attr("x2", x2)
-          .attr("y2", y2 - ARROW_OFFSET)          
+          .attr("y2", y2)
           .attr("stroke-width", 1)
           .attr("stroke", "black")
-
-    //line with arrow            
+    //line with arrow    
+    if (this.isVertical) {
+      y1 = y + firstHalfLineLen;
+      y2 = y1 + secondHalfLineLen;
+    } else {
+      x1 = x + firstHalfLineLen;
+      x2 = x1 + secondHalfLineLen;
+    }
     this.svg.append("line")
           .attr("x1", x1)
-          .attr("y1", y3)
+          .attr("y1", y1)
           .attr("x2", x2)
-          .attr("y2", y4 - ARROW_OFFSET)          
+          .attr("y2", y2)
           .attr("stroke-width", 1)
           .attr("stroke", "black")
           .attr("marker-end", "url(#triangle)");

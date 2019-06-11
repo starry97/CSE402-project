@@ -12,7 +12,8 @@ export const RECT_ATTR = '{"shape": "rect", \
 
 export const ARROW_WITH_TEXT_ATTR = '{"shape": "arrow_with_text", \
                             "color": "black", \
-                            "height": "80", \
+                            "width": "150", \
+                            "height": "50", \
                             "text": ["name"]}'
 
 export const TEXT_OFFSET = 2;
@@ -37,7 +38,8 @@ export const ARROW_LENGTH = 75;
 export const DEFAULT_ARROW_ATTRIBUTES = {
   x: width / 2,
   y: height,
-  length: ARROW_LENGTH
+  length: ARROW_LENGTH,
+  textHeight: 10
 }
 
 export const DEFAULT_TEXT_ATTRIBUTES = {
@@ -47,13 +49,4 @@ export const DEFAULT_TEXT_ATTRIBUTES = {
   textAnchor: "middle"
 }
 
-export const DEFAULT_ARROW_WITH_TEXT_ATTRIBUTES = {
- x1: width / 2,
- x2: width / 2,
- y1: height,
- y2: height + ARROW_LENGTH,
- y3: height,
- y4: height + ARROW_LENGTH,
- height: 80
-}
 
