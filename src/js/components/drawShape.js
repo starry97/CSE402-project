@@ -70,12 +70,14 @@ export class Shape {
       ...attr
     };
     const {x, y, width, height, fill, stroke} = attr;
+    console.log("rect fill is " + fill)
+    console.log("red is " + fill.r)
     this.svg.append("rect")
                 .attr("x", x)
                 .attr("y", y)
                 .attr("width", width)
                 .attr("height", height)
-                .style("fill", fill)
+                .style("fill", fill.r ? d3.rgb(fill.r, fill.g, fill.b) : "black")
                 .style("stroke", stroke);
     return this;
   }

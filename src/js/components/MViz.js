@@ -24,40 +24,65 @@ export default class MViz {
 
       // draw current layer
       const layer = layers[i];
-      const {name, type} = layer;
+      const {name, type, subLayers} = layer;
       const attr = {
         ...attributes[name],
         ...attributes[type]
       }
       const {text, shape, ...styleAttr} = attr;
-      this._appendShape(shape, {x: x, y: y, ...styleAttr});
+      const divide = subLayers ? subLayers.length : 1;
+      let dx = x;
 
-      // draw label on current shape 
-      if (text) {
-        let label = ""
-        for (let i = 0; i < text.length; i++) {
-          label += layer[text[i]];
+      console.log("divide is " + divide);
+
+      for (let i = 0; i < divide; i++) {
+        this._appendShape(shape, {x: dx, y: y, ...styleAttr});
+
+        // draw label on current shape 
+        if (text) {
+          let label = ""
+          for (let i = 0; i < text.length; i++) {
+            if (text[i] == "subLayers") {
+              label += subLayers[i];
+            } else {
+              label += layer[text[i]];
+            }
+          }
+
+          this._appendShape("text", {
+            label,
+            x: dx + parseInt(styleAttr.width) / 2,
+            y: y + parseInt(styleAttr.height) / 2 + TEXT_OFFSET,
+            fill: (shape == "arrow_with_text") ?  "black" : "white"
+          });
         }
 
-        this._appendShape("text", {
-          label,
-          y: y + parseInt(styleAttr.height) / 2 + TEXT_OFFSET,
-          fill: (shape == "arrow_with_text") ?  "black" : "white"
-        });
+        dx += parseInt(styleAttr.width);
+        dx += 20;
       }
 
       y += parseInt(styleAttr.height);
 
       // draw arrow between rect and rect
       if (i != layers.length - 1 && shape == "rect" && nextShape == "rect") {
-        this._appendShape("arrow", {x: x, y: y});
+        dx = x;
+        for (let i = 0; i < divide; i++) {
+          console.log("dx is " + dx);
+          this._appendShape("arrow", {x: dx + parseInt(styleAttr.width) / 2,
+                                      y: y});
+
+          dx += parseInt(styleAttr.width);
+          dx += 20;
+        }
+        
         y = y + ARROW_LENGTH;
       }
+      
     }
     this._insertTo("#viz_container");
 
     const bbox = this.svg.node().getBBox();
-    this.svg.attr("width", bbox.x + bbox.width  + "px"); 
+    this.svg.attr("width", bbox.x + bbox.width + "px"); 
     this.svg.attr("height",bbox.y + bbox.height + "px");
   }
 
@@ -78,6 +103,8 @@ export default class MViz {
         return this.shape.text(attr);
       case "arrow":
         const arrowAttr = {
+          x1: attr.x,
+          x2: attr.x,
           y1: attr.y,
           y2: attr.y + ARROW_LENGTH
         }
