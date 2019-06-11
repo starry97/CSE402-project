@@ -11,6 +11,17 @@ Our project is a visualization tool for machine learning models. Users can uploa
 4. [Final Report](https://docs.google.com/document/d/1edWxtWV8yMIB7xgIR7XZmJ8OU8NvNwFi2V-W2rxQW3Y/edit?ts=5cfee950#)
 
 ## Demo
+To run the demo,
+first install all dependencies
+```
+npm install
+```
+Start a local server
+```
+npm run dev
+```
+This should open a webpage on localhost:8080.
+You can upload a file in `./demo/input` and see the visulization.
 
 ### Motivating Example
 
