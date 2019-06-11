@@ -3,7 +3,7 @@ import { saveAsPNG } from './js/utils/saveAsPNG';
 import { SVG_ID, DEBUG } from './js/utils/constants';
 import { saveAsSVG } from './js/utils/saveAsSVG';
 import MViz from './js/components/MViz';
-import { DEBUG_JSON } from './js/utils/debugJson';
+import { DEBUG_JSON } from './js/utils/debugJson.js';
 
 // for debugging
 if (DEBUG) {

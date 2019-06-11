@@ -1,6 +1,4 @@
-import { SSL_OP_TLS_ROLLBACK_BUG } from "constants";
-
-export const DEBUG = true;
+export const DEBUG = false;
 
 // constants for parsing summary files
 export const DENSE = 'Dense';

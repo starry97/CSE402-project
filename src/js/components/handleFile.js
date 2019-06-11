@@ -10,7 +10,7 @@ export function handleSummaryFileSelect(evt) {
       const content = e.target.result;
       const sp = new SummaryParser(content);
       const json = sp.parse();
-      new MViz(json, "#" + VIZ_CONTAINER, false).draw();
+      new MViz(json, "#" + VIZ_CONTAINER, true).draw();
     }
     r.readAsText(f);
   } else {
@@ -24,7 +24,7 @@ export function handleJSONFileSelect(evt) {
     const r = new FileReader();
     r.onloadend = function(e) { 
       const content = e.target.result;
-      new MViz(content, "#" + VIZ_CONTAINER, false).draw();
+      new MViz(content, "#" + VIZ_CONTAINER, true).draw();
     }
     r.readAsText(f);
   } else {
