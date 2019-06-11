@@ -10,18 +10,17 @@ export const SVG_ID = "__svg";
 export const LAYER_TYPES = [DENSE, CONV_2D, LSTM, EMBEDDING, MAX_POOLING_2D]
 export const NUM_SUBLAYERS = 4;
 export const VIZ_CONTAINER = "viz_container";
+export const ARROW_WITH_TEXT = "arrow_with_text";
 
-export const RECT_ATTR = '{"shape": "rect", \
-                            "fill": "white", \
-                            "width": "150", \
-                            "height": "50", \
-                            "text": ["type"]}'
+export const RECT_ATTR = {
+  "shape": "rect",
+  "text": ["name"]
+};
 
-export const ARROW_WITH_TEXT_ATTR = '{"shape": "arrow_with_text", \
-                            "color": "black", \
-                            "width": "150", \
-                            "height": "50", \
-                            "text": ["name"]}'
+export const ARROW_WITH_TEXT_ATTR = {
+  "shape": "arrow_with_text", 
+  "text": ["name"]
+};
 
 export const TEXT_OFFSET = 2;
 export const ARROW_OFFSET = 5;

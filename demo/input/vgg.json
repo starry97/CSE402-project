@@ -88,27 +88,18 @@
   "attributes": {
     "Conv2D": {
       "shape": "rect",
-      "color": "white",
-      "width": "150",
-      "height": "50",
       "text": [
         "name"
       ]
     },
     "MaxPooling2D": {
-      "shape": "arrow_with_text",
-      "color": "black",
-      "width": "150",
-      "height": "50",
+      "shape": "text",
       "text": [
         "name"
       ]
     },
     "Dense": {
       "shape": "rect",
-      "color": "white",
-      "width": "150",
-      "height": "50",
       "text": [
         "name"
       ]
