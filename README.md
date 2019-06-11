@@ -10,6 +10,8 @@ Our project is a visualization tool for machine learning models. Users can uploa
 
 4. [Final Report](https://docs.google.com/document/d/1edWxtWV8yMIB7xgIR7XZmJ8OU8NvNwFi2V-W2rxQW3Y/edit?ts=5cfee950#)
 
+5. [Poster](https://drive.google.com/file/d/1hE8SMe1EDhcHEGfMfRhTdo11f0rBY7of/view?usp=sharing)
+
 ## Demo
 To run the demo,
 first install all dependencies
