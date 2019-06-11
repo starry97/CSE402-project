@@ -1,11 +1,11 @@
-import { SVG_ID, DEBUG, TEXT_OFFSET, ARROW_OFFSET, LAYER_TYPES, COLORS } from '../utils/constants';
+import { SVG_ID, DEBUG, TEXT_OFFSET, ARROW_OFFSET, LAYER_TYPES, COLORS, DIR_R } from '../utils/constants';
 
 export function drawViz(data, containerID = "body") {
   const parsedData = JSON.parse(data);
   const svg = d3.select(containerID)
     .append("svg")
     .attr("width", 1200)
-    .attr("height", 800);  
+    .attr("height", 1000);  
 
   const getTextX = (d) => {
     return d.x + d.width / 2;
@@ -30,37 +30,63 @@ export function drawViz(data, containerID = "body") {
         if (link.source == d.name) {
           d3.select(this)
             .select("line")
-            .attr("x1", d.x + d.width / 2)
-            .attr("y1", d.y + d.height);
+            .attr("x1", link.dir == DIR_R ? d.x + d.width : d.x + d.width / 2)
+            .attr("y1", link.dir == DIR_R ? d.y + d.height / 2 : d.y + d.height);
         } else if (link.destination == d.name) {
           d3.select(this)
             .select("line")
-            .attr("x2", d.x + d.width / 2) 
-            .attr("y2", d.y - ARROW_OFFSET);
+            .attr("x2", link.dir == DIR_R ? d.x - ARROW_OFFSET : d.x + d.width / 2) 
+            .attr("y2", link.dir == DIR_R ? d.y + d.height / 2 : d.y - ARROW_OFFSET);
         }
       });
     });
-    console.log(parsedData);
+    
     const links = svg.selectAll("link")
       .data(parsedData.links)
       .enter()
       .append("g")
       .attr("class", "link");
 
-    links.append("line")
+      links.append("line")
       .attr("x1", function(l) {
         var sourceNode = parsedData.nodes.filter(function(d) {
           return d.name == l.source
         })[0];
-        d3.select(this).attr("y1", sourceNode.y + sourceNode.height);
-        return sourceNode.x + sourceNode.width / 2
+        if (l.dir == DIR_R) {
+          return sourceNode.x + sourceNode.width;
+        } else {
+          return sourceNode.x + sourceNode.width / 2;
+        }
       })
       .attr("x2", function(l) {
         var destNode = parsedData.nodes.filter(function(d) {
           return d.name == l.destination
         })[0];
-        d3.select(this).attr("y2", destNode.y - ARROW_OFFSET);
-        return destNode.x + destNode.width / 2;
+        if (l.dir == DIR_R) {
+          return destNode.x - ARROW_OFFSET;
+        } else {
+          return destNode.x + destNode.width / 2;
+        }
+      })
+      .attr("y1", function(l) {
+        var sourceNode = parsedData.nodes.filter(function(d) {
+          return d.name == l.source
+        })[0];
+        if (l.dir == DIR_R) {
+          return sourceNode.y + sourceNode.height / 2;
+        } else {
+          return sourceNode.y + sourceNode.height;
+        }
+      })
+      .attr("y2", function(l) {
+        var destNode = parsedData.nodes.filter(function(d) {
+          return d.name == l.destination
+        })[0];
+        if (l.dir == DIR_R) {
+          return destNode.y + destNode.height / 2;
+        } else {
+          return destNode.y - ARROW_OFFSET;
+        }
       })
       .attr("fill", "none")
       .attr("stroke", "black")
