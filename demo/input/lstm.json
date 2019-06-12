@@ -1,0 +1,51 @@
+{
+  "layers": [
+    {
+      "name": "embedding_1",
+      "type": "Embedding",
+      "subLayers": [
+        "embedding_1_1",
+        "embedding_1_2",
+        "embedding_1_3",
+        "embedding_1_4"
+      ],
+      "connection": 0
+    },
+    {
+      "name": "lstm_1",
+      "type": "LSTM",
+      "subLayers": [
+        "lstm_1_1",
+        "lstm_1_2",
+        "lstm_1_3",
+        "lstm_1_4"
+      ],
+      "connection": 1
+    },
+    {
+      "name": "dense_1",
+      "type": "Dense",
+      "connection": 0
+    }
+  ],
+  "attributes": {
+    "Embedding": {
+      "shape": "rect",
+      "text": [
+        "name"
+      ]
+    },
+    "LSTM": {
+      "shape": "rect",
+      "text": [
+        "name"
+      ]
+    },
+    "Dense": {
+      "shape": "rect",
+      "text": [
+        "name"
+      ]
+    }
+  }
+}

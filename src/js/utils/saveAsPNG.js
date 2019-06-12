@@ -2,7 +2,8 @@ import {saveAs} from 'file-saver';
 // modified from http://bl.ocks.org/Rokotyan/0556f8facbaf344507cdc45dc3622177
 
 export function saveAsPNG(svgNode) {
-  const width = 300, height = 300;
+	const width = parseInt(svgNode.attributes.width.value);
+	const height = parseInt(svgNode.attributes.height.value);
 	const svgString = getSVGString(svgNode);
 	svgToImage(svgString, 2 * width, 2 * height, save); // passes Blob and filesize String to the callback
 
