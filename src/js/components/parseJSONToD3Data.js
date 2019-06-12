@@ -14,38 +14,41 @@ export function parseJSONToD3Data(jsonStr) {
   for (let i = 0; i < layers.length; i++) {
     const layer = layers[i];
     const {name, type, subLayers} = layer;
-    
-    
-    const attr = {
-      ...attributes[type],
-      ...attributes[name]
-    }
-    // don't include text in attr
-    let {text, ...styleAttr} = attr;
-    // default text is its name
-    text = text || ["name"]
-    // default shape is rect
-    const shape = attr.shape || "rect";
-
-    if (subLayers) {
-      hasSub = true;
-    }
-
-    if (hasSub && !subLayers) {
-      x = SVG_X_OFFSET + (getDefaultAttr(shape).width + ARROW_LENGTH) * (NUM_SUBLAYERS - 1);
-    }
-    
 
     const divide = subLayers ? subLayers.length : 1;
     const connection = layer.connection;
     let dx = 0;
+    let shape;
 
     for (let j = 0; j < divide; j++) {
+      let attr = {
+        ...attributes[type],
+        ...attributes[subLayers ? subLayers[j] : name]
+      }
+
+      // don't include text in attr
+      let {text, ...styleAttr} = attr;
+      // default text is its name
+      text = text || ["name"]
+      // default shape is rect
+      shape = attr.shape || "rect";
+
+      if (subLayers) {
+        hasSub = true;
+      }
+  
+      if (hasSub && !subLayers) {
+        console.log("shape is " + shape)
+        x = SVG_X_OFFSET + (getDefaultAttr(shape).width + ARROW_LENGTH) * (NUM_SUBLAYERS - 1);
+      }
+
+      if (subLayers) {
+        layer.name = subLayers[j];
+      }
+
       const label = getLabel(layer, text, subLayers, j);
+
       if (shape == "rect") {
-        if (subLayers) {
-          layer.name = subLayers[j];
-        }
         result.nodes.push({
           ...getDefaultAttr(shape),
           x: x + dx,
@@ -101,7 +104,7 @@ export function parseJSONToD3Data(jsonStr) {
 
     y += getDefaultAttr(shape).height + ARROW_LENGTH;
   }
-  //console.log(JSON.stringify(result));
+  console.log(JSON.stringify(result));
   return JSON.stringify(result);
 }
 
