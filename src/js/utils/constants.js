@@ -11,6 +11,7 @@ export const LAYER_TYPES = [DENSE, CONV_2D, LSTM, EMBEDDING, MAX_POOLING_2D]
 export const NUM_SUBLAYERS = 4;
 export const VIZ_CONTAINER = "viz_container";
 export const ARROW_WITH_TEXT = "arrow_with_text";
+export const LOCAL_STORAGE_KEY = "__mviz";
 
 export const DIR_L = "left";
 export const DIR_R = "right";

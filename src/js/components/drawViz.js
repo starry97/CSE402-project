@@ -53,6 +53,7 @@ export function drawViz(data, containerID = "body") {
           return d.name == l.source
         })[0];
         if (l.dir == DIR_R) {
+          console.log(sourceNode);
           return sourceNode.x + sourceNode.width;
         } else {
           return sourceNode.x + sourceNode.width / 2;

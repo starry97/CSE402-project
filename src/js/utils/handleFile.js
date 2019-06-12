@@ -1,4 +1,4 @@
-import { VIZ_CONTAINER } from './constants';
+import { VIZ_CONTAINER, LOCAL_STORAGE_KEY } from './constants';
 import { parseSummaryToJSON } from '../components/parseSummaryToJSON';
 import { drawViz } from '../components/drawViz';
 import { parseJSONToD3Data } from '../components/parseJSONToD3Data';
@@ -10,6 +10,7 @@ export function handleSummaryFileSelect(evt) {
     r.onloadend = function(e) { 
       const content = e.target.result;
       const json = parseSummaryToJSON(content);
+      localStorage.setItem(LOCAL_STORAGE_KEY, json);
       const d3Data = parseJSONToD3Data(json);
       console.log(d3Data);
       drawViz(d3Data, "#" + VIZ_CONTAINER);
