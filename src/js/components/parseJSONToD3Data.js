@@ -32,7 +32,7 @@ export function parseJSONToD3Data(jsonStr) {
     }
 
     if (hasSub && !subLayers) {
-      x = (getDefaultAttr(shape).width + ARROW_LENGTH) * (NUM_SUBLAYERS - 1);
+      x = SVG_X_OFFSET + (getDefaultAttr(shape).width + ARROW_LENGTH) * (NUM_SUBLAYERS - 1);
     }
     
 
@@ -43,9 +43,11 @@ export function parseJSONToD3Data(jsonStr) {
     for (let j = 0; j < divide; j++) {
       const label = getLabel(layer, text, subLayers, j);
       if (shape == "rect") {
+        if (subLayers) {
+          layer.name = subLayers[j];
+        }
         result.nodes.push({
           ...getDefaultAttr(shape),
-          name: layer.name,
           x: x + dx,
           y,
           label,
