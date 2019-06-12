@@ -39,7 +39,7 @@ export function parseJSONToD3Data(jsonStr) {
   
       if (hasSub && !subLayers) {
         console.log("shape is " + shape)
-        x = SVG_X_OFFSET + (getDefaultAttr(shape).width + ARROW_LENGTH) * (NUM_SUBLAYERS - 1);
+        x = SVG_X_OFFSET + ((attr.width || getDefaultAttr(shape).width + ARROW_LENGTH) * (NUM_SUBLAYERS - 1));
       }
 
       if (subLayers) {
