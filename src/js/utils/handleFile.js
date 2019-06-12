@@ -1,6 +1,6 @@
 import { VIZ_CONTAINER } from './constants';
 import { parseSummaryToJSON } from '../components/parseSummaryToJSON';
-import { drawViz } from '../components/NewMViz';
+import { drawViz } from '../components/drawViz';
 import { parseJSONToD3Data } from '../components/parseJSONToD3Data';
 
 export function handleSummaryFileSelect(evt) {

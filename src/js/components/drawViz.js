@@ -113,8 +113,8 @@ export function drawViz(data, containerID = "body") {
       .attr("fill", d => {
         if (d.shape == "text") {
           return "none";
-        }
-        return colors(d.type)
+        } 
+        return d.fill || colors(d.type)
       });
     
 
@@ -122,7 +122,7 @@ export function drawViz(data, containerID = "body") {
       .attr("x", getTextX)
       .attr("y", getTextY)
       .text(d => d.label)
-      .style('fill', 'black')
+      .style('fill', d => d.color || 'black')
       .style("text-anchor", "middle");
 
       svg.append("svg:defs").append("svg:marker")

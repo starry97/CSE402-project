@@ -3,6 +3,7 @@ import { saveAsPNG } from './js/utils/saveAsPNG';
 import { SVG_ID, DEBUG, TEXT_OFFSET, ARROW_OFFSET, LAYER_TYPES, COLORS } from './js/utils/constants';
 import { saveAsSVG } from './js/utils/saveAsSVG';
 import { parseJSONToD3Data } from './js/components/parseJSONToD3Data';
+import { drawViz } from './js/components/drawViz';
 
 // for debugging
 // if (DEBUG) {
@@ -49,6 +50,9 @@ function addButtons() {
 
 Split(['#one', '#two']).setSizes([25, 70]);
 
-const data = JSON.parse(parseJSONToD3Data('{"layers":[{"name":"block1_conv1","type":"Conv2D"},{"name":"block1_conv2","type":"Conv2D"},{"name":"block1_pool","type":"MaxPooling2D"},{"name":"block2_conv1","type":"Conv2D"},{"name":"block2_conv2","type":"Conv2D"},{"name":"block2_pool","type":"MaxPooling2D"},{"name":"block3_conv1","type":"Conv2D"},{"name":"block3_conv2","type":"Conv2D"},{"name":"block3_conv3","type":"Conv2D"},{"name":"block3_pool","type":"MaxPooling2D"},{"name":"block4_conv1","type":"Conv2D"},{"name":"block4_conv2","type":"Conv2D"},{"name":"block4_conv3","type":"Conv2D"},{"name":"block4_pool","type":"MaxPooling2D"},{"name":"block5_conv1","type":"Conv2D"},{"name":"block5_conv2","type":"Conv2D"},{"name":"block5_conv3","type":"Conv2D"},{"name":"block5_pool","type":"MaxPooling2D"},{"name":"fc1","type":"Dense"},{"name":"fc2","type":"Dense"},{"name":"predictions","type":"Dense"}],"attributes":{"Conv2D":{"shape":"rect","text":["name"]},"MaxPooling2D":{"shape":"text","text":["name"]},"Dense":{"shape":"rect","text":["name"]}}}'));
-// main(data);
+const data = parseJSONToD3Data('{"layers":[{"name":"dense_1","type":"Dense"},{"name":"dense_2","type":"Dense"}],"attributes":{"dense_1":{"shape":"rect","text":["name"],"fill":"blue","color":"red","x":300,"width":200,"height":50}}}');
+
+// console.log(data);
+// drawViz(data);
+
 
