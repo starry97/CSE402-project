@@ -15,20 +15,17 @@ export function parseJSONToD3Data(jsonStr) {
     const layer = layers[i];
     const {name, type, subLayers} = layer;
     
-    let nextLayer, nextType, nextShape;
-    if (i != layers.length - 1) {
-      nextLayer = layers[i + 1];
-      nextType = nextLayer["type"];
-      nextShape = attributes[nextType]["shape"];
-    }
     
     const attr = {
       ...attributes[type],
       ...attributes[name]
     }
     // don't include text in attr
-    const {text, ...styleAttr} = attr;
-    const {shape} = attr;
+    let {text, ...styleAttr} = attr;
+    // default text is its name
+    text = text || ["name"]
+    // default shape is rect
+    const shape = attr.shape || "rect";
 
     if (subLayers) {
       hasSub = true;
@@ -45,10 +42,10 @@ export function parseJSONToD3Data(jsonStr) {
 
     for (let j = 0; j < divide; j++) {
       const label = getLabel(layer, text, subLayers, j);
-      layer.name = label;
       if (shape == "rect") {
         result.nodes.push({
           ...getDefaultAttr(shape),
+          name: layer.name,
           x: x + dx,
           y,
           label,
@@ -76,8 +73,8 @@ export function parseJSONToD3Data(jsonStr) {
         }
       }
 
-      if (i != layers.length - 1) {      
-        if (nextShape == "rect" || nextShape == "text") {
+      if (i != layers.length - 1) {
+          const nextLayer = layers[i + 1];
           // draw text shape as a text in front of a small white rect.
           if (subLayers && !nextLayer.subLayers) {
             // default subLayers to no sublayers, the next layer 
@@ -96,10 +93,7 @@ export function parseJSONToD3Data(jsonStr) {
               dir: DIR_D
             });
           }
-          
-        }
       }
-
       dx += getDefaultAttr(shape).width + ARROW_LENGTH;
     }
 
@@ -127,6 +121,7 @@ function getLabel(layer, text, subLayers, subIdx) {
 
 function getDefaultAttr(shape) {
   switch (shape) {
+    case undefined:
     case "rect":
       return {
         "x": 0,

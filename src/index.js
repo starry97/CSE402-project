@@ -52,7 +52,7 @@ Split(['#one', '#two']).setSizes([25, 70]);
 
 const data = parseJSONToD3Data('{"layers":[{"name":"dense_1","type":"Dense"},{"name":"dense_2","type":"Dense"}],"attributes":{"dense_1":{"shape":"rect","text":["name"],"fill":"blue","color":"red","x":300,"width":200,"height":50}}}');
 
-// console.log(data);
-// drawViz(data);
+console.log(data);
+drawViz(data);
 
 

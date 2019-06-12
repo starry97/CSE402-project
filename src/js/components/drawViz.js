@@ -135,4 +135,12 @@ export function drawViz(data, containerID = "body") {
         .append("path")
         .attr("d", "M 0 0 12 6 0 12 3 6")
         .style("fill", "black");
+    
+    autoSize(svg);
   }
+
+function autoSize(svg) {
+  const bbox = svg.node().getBBox();
+  svg.attr("width", bbox.x + bbox.width  + 100 + "px"); 
+  svg.attr("height",bbox.y + bbox.height + 100 + "px");
+}
