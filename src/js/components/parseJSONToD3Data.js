@@ -32,7 +32,7 @@ export function parseJSONToD3Data(jsonStr) {
     }
 
     if (hasSub && !subLayers) {
-      x = (getDefaultAttr(shape).width + ARROW_LENGTH) * (NUM_SUBLAYERS - 1);
+      x = ((attr.width || getDefaultAttr(shape).width + ARROW_LENGTH) * (NUM_SUBLAYERS - 1));
     }
     
 
