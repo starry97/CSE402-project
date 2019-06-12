@@ -23,7 +23,7 @@ Start a local server
 npm run dev
 ```
 This should open a webpage on localhost:8080.
-You can upload a file in `./demo/input` and see the visulization.
+You can upload a file in `./demo/input` and see the visualization.
 
 ### Motivating Example
 
@@ -60,4 +60,43 @@ To draw the above graph using d3, you may need
   ]
 }
 ```
-This is very tedious and error prone for just two layers. Instead, using MViz, you can simply upload the summary file of your Keras model. 
+This is very tedious and error prone for just two layers. Instead, using MViz, you can simply upload the summary file of your Keras model. This generates a graph with default attributes as well as the following JSON file that can be modified to draw custom graphs.
+
+```js
+{
+  "layers": [
+    {
+      "name": "dense_1",
+      "type": "Dense"
+    },
+    {
+      "name": "dense_2",
+      "type": "Dense"
+    }
+  ],
+  "attributes": {
+    "Dense": {
+      "shape": "rect",
+      "text": [
+        "name"
+      ]
+    }
+  }
+}
+```
+
+Users may decide the default color doesn't look great, and they may modify attributes to the following to change the color to red and label to white.
+
+```js
+"attributes": {
+    "Dense": {
+      "shape": "rect",
+      "text": [
+        "name"
+      ],
+      "fill": "red",
+      "color": "white"
+    }
+  }
+```
+Other customizable attributes include label, x, y, width and height. 
